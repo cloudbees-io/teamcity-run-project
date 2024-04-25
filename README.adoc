@@ -1,0 +1,89 @@
+= CloudBees action: Run a TeamCity project
+
+Use this action to run a TeamCity project and fetch the run information as output. TeamCity is a JetBrains CI/CD tool.
+
+
+== Inputs
+
+[cols="2a,1a,3a,3a",options="header"]
+.Input details
+|===
+
+| Input name
+| Data type
+| Required?
+| Description
+
+| `host`
+| String
+| Yes
+| The TeamCity host URL.
+
+| `token`
+| String
+| Required only if `username` and `password` are not specified.
+| The TeamCity token.
+
+| `username`
+| String
+| Required only if `token` is not specified.
+| The TeamCity username.
+
+| `password`
+| String
+| Required only if `token` is not specified.
+| The TeamCity password.
+
+| `project-name`
+| String
+| Yes
+| The TeamCity project name.
+
+| `build-type-name`
+| String
+| Required only if project has multiple builds.
+| The TeamCity plan name.
+
+| `branch-name`
+| String
+| No
+| The TeamCity branch name.
+
+| `parameters`
+| JSON
+| No
+| Any additional parameters, formatted as JSON data in key/value pairs.
+
+|===
+
+== Usage example
+
+In your YAML file, add:
+
+[source,yaml,role="default-expanded"]
+----
+jobs:
+  build:
+    steps:
+
+      - name: Run TeamCity project
+        uses: cloudbees-io/teamcity-run-project@v1
+        with:
+          host : ${{ vars.TEAMCITY_HOST_URL }}
+          token: ${{ secrets.TEAMCITY_TOKEN }}
+          project-name: Project001
+          build-type-name: Build001
+          branch-name: test
+          parameters: {'test1':'test1','test2':'test2'}
+
+----     
+
+== License
+
+This code is made available under the 
+link:https://opensource.org/license/mit/[MIT license].
+
+== References
+
+* Learn more about link:https://docs.cloudbees.com/docs/cloudbees-platform/latest/actions[using actions in CloudBees workflows].
+* Learn about link:https://docs.cloudbees.com/docs/cloudbees-platform/latest/[the CloudBees platform].

@@ -1,0 +1,51 @@
+apiVersion: automation.cloudbees.io/v1alpha1
+kind: action
+name: team city trigger actions
+inputs:
+  host:  # id of input
+    description: 'host'
+    required: true
+  token:  # id of input
+    description: 'token'
+    required: false
+    default: ''
+  username:  # id of input
+    description: 'username'
+    required: false
+    default: ''
+  password:  # id of input
+    description: 'password'
+    required: false 
+    default: ''     
+  project-name:  # id of input
+    description: 'project name'
+    required: true
+  build-type-name:  # id of input
+    description: 'build type name'
+    required: false
+    default: ''
+  branch-name:  # id of input
+    description: 'branch name'
+    required: false
+    default: ''
+  parameters:  # id of input
+    description: 'parameters'
+    required: false 
+    default: '{}'  
+runs:
+  using: composite
+  steps:
+    - id: trigger-teamcity-action
+      name: trigger-teamcity-action
+      uses: docker://public.ecr.aws/l7o7z1g8/actions/teamcity-invoke-actions:main-116ba99ff20ff776bd10737e0c70a948962faaa4
+      shell: sh
+      env:
+        RUN_ID: ${{ cloudbees.run_id }}
+        JOB_ID: ${{ job.id }}
+        STEP_ID: ${{ step.internal.id }}
+        DNS_URL: ${{ cloudbees.api.url }}
+        JWT_TOKEN: ${{ cloudbees.api.token }}
+      run: |
+        set -x
+        cd /app
+        ./teamcity_actions_app invoke -i '{"metaInfo":{"action":"TEAMCITY_ACTIONS","host":"${{ inputs.host }}","token":"${{ inputs.token }}","username":"${{ inputs.username }}","password":"${{ inputs.password }}","projectName":"${{ inputs.project-name }}","buildTypeName":"${{ inputs.build-type-name }}","branchName":"${{ inputs.branch-name }}","parameters":${{ inputs.parameters }}}}'
