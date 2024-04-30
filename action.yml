@@ -37,7 +37,7 @@ runs:
   steps:
     - id: trigger-teamcity-action
       name: trigger-teamcity-action
-      uses: docker://public.ecr.aws/l7o7z1g8/actions/teamcity-invoke-actions:main-116ba99ff20ff776bd10737e0c70a948962faaa4
+      uses: docker://public.ecr.aws/l7o7z1g8/actions/teamcity-invoke-actions:main-60fdf179ef6eaf8322acf2fc8e018a30022c2e6b
       shell: sh
       env:
         RUN_ID: ${{ cloudbees.run_id }}
